@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    1911
+                    Laravel-MP
                 </div>
 
                 <div class="links">
