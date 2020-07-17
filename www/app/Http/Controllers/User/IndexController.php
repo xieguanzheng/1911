@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\User;
+use App\Model\TokenModle;
+use Illuminate\Support\Str;
 
 class IndexController extends Controller
 {
@@ -74,20 +76,69 @@ class IndexController extends Controller
             return $data;
         }
         $user = new user();
-        $username = $user::where(['user_name'=>$user_name])->first();
-        if(!$username){
+        $u = $user::where(['user_name'=>$user_name])->first();
+        if(!$u){
             $data = [
                 'errno' => 00006,
                 'msg'   => "用户名不存在"
             ];
             return $data;
         }
-        if($username['password']==$password){
-            $data = [
-                'errno' => 00007,
-                'msg'   => "登录成功"
+        if($u['password']==$password){
+            //生产token
+            $token = Str::random(32);
+            $expire_seconds = 7200;
+
+            $arr = [
+                'token' =>$token,
+                'uid'   =>$u->user_id,
+                'expire_at' => time() + $expire_seconds
             ];
-            return $data;
+
+            TokenModle::insertGetid($arr);
+            $data = [
+                'errno' => 0,
+                'msg'   => "登录成功",
+                'data' => [
+                    'token' =>$token,
+                    'expire_in' => $expire_seconds
+                ]
+            ];
+        }else{
+            $data = [
+                'errno' => 500002,
+                'msg'   => "密码错误"
+            ];
         }
+        return $data;
     }
+   public function center(Request $request)
+   {
+       $token=$request ->get('token');
+       if(empty($token)){
+           $data = [
+               'errno' => 500003,
+               'msg'   => "没有授权"
+           ];
+           return $data;
+       }
+       $t= TokenModle::where(['token'=>$token])->first();
+       if($t){
+           $user_info=User::find($t->uid);
+           $data = [
+               'errno' => 0,
+               'msg'   => "ok",
+               'data'=>[
+                   'user_info'=>$user_info
+               ]
+           ];
+           return $data;
+       }else {
+           $data = [
+               'errno' => 500004,
+               'msg' => "token"
+           ];
+           return $data;
+       }
+   }
 }
