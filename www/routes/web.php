@@ -14,6 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/info', function () {
+    phpinfo();
+});
+
+Route::get('/redis/hash1','TestController@hash1');
+Route::get('/redis/hash2','TestController@hash2');
+Route::get('/cont','TestController@cont');
+
 Route::get('/wx/token','TestController@getWToken');
 Route::get('/wx/token2','TestController@getWToken2');
 Route::get('/wx/token3','TestController@getWToken3');
@@ -24,5 +32,5 @@ Route::post('/user/login','TestController@login');
 
 
 Route::any('/user/reg','User\IndexController@reg');
-Route::post('/user/login','User\IndexController@login');
+Route::any('/user/login','User\IndexController@login');
 Route::get('/user/center','User\IndexController@center');

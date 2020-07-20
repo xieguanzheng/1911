@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
+use DB;
 class TestController extends Controller{
     public function getWToken(){
         $appid ="wxcd43d01b649b84cb";
@@ -55,5 +58,45 @@ class TestController extends Controller{
         echo '<pre>';print_r($_POST);echo'</pre>';
         $email=$request->post('email');
         $pass=$request->post('pass');
+    }
+//    public function b(){
+//        $goods_info=[
+//            'goods_id'=>12345,
+//            'goods_name'=>'IPhonex',
+//            'price'=>800000,
+//            'add_time'=>123123123
+//        ];
+//        $key ='goods_12345';
+//        Redsi::hmset($key,$goods_info);
+//    }
+ public function hash1(){
+     $data=[
+         'name'=>'xie',
+         'email'=> 'xie@qq.com',
+         'age'=> 17,
+     ];
+     $key ='user_info1';
+     Redis::hMset($key,$data);
+ }
+    public function hash2(){
+        $key ='user_info1';
+        $data=Redis::hgetall($key);
+        echo '<pre>';print_r($data);echo'</pre>';
+    }
+    public  function cont()
+    {
+        $store = Redis::llen('store');
+        $storeinfo = Redis::lrange('store', 0, -1);
+        if (!$storeinfo) {
+            Redis::lpush('store', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1);
+        }
+        if ($store > 0) {
+            Redis::lpop('store');
+            $content = '库存-1';
+            $content . "剩余" . $store;die;
+        } else {
+            $content = "库存没有咯!";
+            echo $content . "库存剩余".$store;die;
+        }
     }
 }

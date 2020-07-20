@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\User;
 use App\Model\TokenModle;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {
@@ -85,6 +86,8 @@ class IndexController extends Controller
             return $data;
         }
         if($u['password']==$password){
+
+
             //生产token
             $token = Str::random(32);
             $expire_seconds = 7200;
@@ -96,6 +99,21 @@ class IndexController extends Controller
             ];
 
             TokenModle::insertGetid($arr);
+            $request_uri=$_SERVER['REQUEST_URI'];
+            //echo 'request_uri:'.$_SERVER['REQUEST_URI'];echo '</br>';
+            $url_hash=substr(md5($request_uri),5,10);
+            $expire =10;//时间
+            //echo 'url_hash:'.$url_hash;
+            $key='access_token'.$url_hash;
+            //echo 'redis key:'.$key;
+            $total =Redis::incr($key);
+            if($total >10){
+                echo "请求过于频繁 ,请{$expire}秒后再尝试";
+                //设置过期时间
+                Redis::expire($key,10);
+            }else{
+                echo '当前访问次数为:'.$total;
+            }
             $data = [
                 'errno' => 0,
                 'msg'   => "登录成功",
@@ -115,6 +133,8 @@ class IndexController extends Controller
    public function center(Request $request)
    {
        $token=$request ->get('token');
+       $key='s:token:blacklist';
+       Redis::sismember($key,$token);
        if(empty($token)){
            $data = [
                'errno' => 500003,
