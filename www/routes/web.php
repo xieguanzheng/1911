@@ -21,6 +21,7 @@ Route::get('/info', function () {
 Route::get('/redis/hash1','TestController@hash1');
 Route::get('/redis/hash2','TestController@hash2');
 Route::get('/cont','TestController@cont');
+Route::get('/user/sign','User\IndexController@sign');
 
 Route::get('/wx/token','TestController@getWToken');
 Route::get('/wx/token2','TestController@getWToken2');
