@@ -103,16 +103,16 @@ class IndexController extends Controller
 
             $expire_seconds = 7200; //token的有效期
 //            //入库
-//           $arr = [
-//               'token'     => $token,
-//               'uid'       => $u->user_id,
-//               'expire_at' =>time() + $expire_seconds
-//           ];
-//           TokenModle::insertGetid($arr);
-            Redis::set('token',$token);
-            Redis::set('user_id',$u->user_id);
-            Redis::expire('token',7200);
-            Redis::expire('user_id',7200);
+           $arr = [
+               'token'     => $token,
+               'uid'       => $u->user_id,
+               'expire_at' =>time() + $expire_seconds
+           ];
+           TokenModle::insertGetid($arr);
+//            Redis::set('token',$token);
+//            Redis::set('user_id',$u->user_id);
+//            Redis::expire('token',7200);
+//            Redis::expire('user_id',7200);
             $data = [
                 'errno' => '0',
                 'msg'   => "登录成功",
@@ -152,37 +152,38 @@ class IndexController extends Controller
         if($token==$redis_token){
             $blacktoken = Redis::sismember('blacktoken',$token);
             if($blacktoken){
-                $data = [
-                    'errno'=> 50009,
-                    'msg'  =>"已放入黑名单"
-                ];
-                return $data;
-            }else{
-                //防刷
-                $count_key = 'count';
-                $count =  Redis::get($count_key);
-                if($count>10){
-                    $data = [
-                        'errno' => 50008,
-                        'msg'   => "请求过于频繁"
-                    ];
-                    Redis::sadd('blacktoken',$token);
-                    Redis::expire('blacktoken',600);
-                    Redis::expire($count_key,30);
+                if($blacktoken){
+                    Redis::del("token");
+                    Redis::del("user_id");
+                    die('由于访问次数过多以添加到黑名单');
                     return $data;
                 }else{
-                    Redis::incr($count_key);
-                    Redis::expire($count_key,30);
-                    $user_id = Redis::get('user_id');
-                    $user_info = User::find($user_id);
-                    $data = [
-                        'errno'  => 0,
-                        'msg'    => 'ok',
-                        'data'   => [
-                            'user_info' => $user_info
-                        ]
-                    ];
-                    return $data;
+                    //防刷
+                    $count_key = 'count';
+                    $count =  Redis::get($count_key);
+                    if($count>10){
+                        $data = [
+                            'errno' => 50008,
+                            'msg'   => "请求过于频繁"
+                        ];
+                        Redis::sadd('blacktoken',$token);
+                        Redis::expire('blacktoken',600);
+                        Redis::expire($count_key,30);
+                        return $data;
+                    }else{
+                        Redis::incr($count_key);
+                        Redis::expire($count_key,30);
+                        $user_id = Redis::get('user_id');
+                        $user_info = User::find($user_id);
+                        $data = [
+                            'errno' => 0,
+                            'msg'    => 'ok',
+                            'data'   => [
+                                'user_info' => $user_info
+                            ]
+                        ];
+                        return $data;
+                    }
                 }
             }
         }else{

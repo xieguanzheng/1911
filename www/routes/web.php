@@ -33,5 +33,5 @@ Route::post('/user/login','TestController@login');
 
 
 Route::any('/user/reg','User\IndexController@reg');
-Route::any('/user/login','User\IndexController@login');
-Route::get('/user/center','User\IndexController@center');
+Route::any('/user/login','User\IndexController@login')->middleware('verify.token');
+Route::get('/user/center','User\IndexController@center')->middleware('count');
