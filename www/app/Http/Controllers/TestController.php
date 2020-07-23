@@ -99,4 +99,82 @@ class TestController extends Controller{
             echo $content . "库存剩余".$store;die;
         }
     }
+    /**
+
+* 对称加密
+     */
+        public function encrtypt1(){
+            //echo '123';die;
+            $data ='天王盖地虎,宝塔镇河妖';
+            $method='AES-256-CBC';
+            $key='1911mp';
+            $iv='hellohelloABCDEF';
+            echo "原密:".$data."<br>"."</hr>";
+            //加密数据
+            $enc_data=openssl_encrypt($data,$method,$key,OPENSSL_RAW_DATA,$iv);
+            echo "加密后的:".$enc_data."<br>"."</hr>";
+            //post数据
+
+            $post_data = [
+                'data' => $enc_data,
+            ];
+            //将加密的文件发送
+            $url='http://mp.1911.com/test/decrypt1';
+            //curl初始
+            $ch=curl_init();
+            //设置参数
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,1);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$post_data);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+            //发送请求
+            $response=curl_exec($ch);
+            echo $response;
+            //提示错误
+            $errno=curl_errno($ch);
+            if($errno){
+                $errmsg=curl_error($ch);
+                var_dump($errmsg);
+            }
+            curl_close($ch);
+        }
+    /*
+     * 非对称加密
+     */
+    public function rsa(){
+        //echo '123';
+        $data="米西米西滑不拉西,如果你不拉西我就不能米西@马帅生";//加密数据
+        echo "原密:".$data."<br>"."</hr>";
+        //使用公钥加密
+        $content=file_get_contents(storage_path('keys/pub.key'));
+        $pub_key=openssl_get_publickey($content);
+        openssl_public_encrypt($data,$enc_data,$pub_key);
+       //var_dump($enc_data);
+        echo "加密后的:".$enc_data."<br>"."</hr>";
+        //post数据
+
+        $post_data = [
+            'data' => $enc_data,
+        ];
+        //将加密的文件发送
+        $url='http://mp.1911.com/test/desc';
+        //curl初始
+        $ch=curl_init();
+        //设置参数
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$post_data);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        //发送请求
+        $response=curl_exec($ch);
+        echo $response;
+        //提示错误
+        $errno=curl_errno($ch);
+        if($errno){
+            $errmsg=curl_error($ch);
+            var_dump($errmsg);
+        }
+        curl_close($ch);
+    }
+
 }
