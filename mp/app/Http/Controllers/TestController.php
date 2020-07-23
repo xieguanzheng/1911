@@ -47,7 +47,27 @@ class TestController extends Controller{
 
     }
     public function userInfo(){
-        echo 'userInfo';
+        echo '123456';
     }
+    public function login(Request $request){
+        echo '<pre>';print_r($_POST);echo'</pre>';
+        $email=$request->post('email');
+        $pass=$request->post('pass');
+    }
+    public function decrypt1(){
+        $method='AES-256-CBC';
+        $key='1911mp';
+        $iv='hellohelloABCDEF';
+        $enc_data =$_POST['data'];
+        $dec_data=openssl_decrypt($enc_data,$method,$key,OPENSSL_RAW_DATA,$iv);
+        echo "解密的数据:".$dec_data;
+    }
+    public function desc(){
+        //echo "123";
+        $enc_data =$_POST['data'];
+        $priv_key=openssl_get_privatekey(file_get_contents(storage_path('keys/priv.key')));
+        openssl_private_decrypt($enc_data,$dec_data,$priv_key);
+        echo "解密的数据:".$dec_data;
 
+    }
 }
