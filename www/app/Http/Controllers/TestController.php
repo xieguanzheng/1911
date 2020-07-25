@@ -146,18 +146,19 @@ class TestController extends Controller{
         $data="米西米西滑不拉西,如果你不拉西我就不能米西@马帅生";//加密数据
         echo "原密:".$data."<br>"."</hr>";
         //使用公钥加密
-        $content=file_get_contents(storage_path('keys/pub.key'));
+        $content=file_get_contents(storage_path('keys/mp_pub.key'));
         $pub_key=openssl_get_publickey($content);
         openssl_public_encrypt($data,$enc_data,$pub_key);
        //var_dump($enc_data);
-        echo "加密后的:".$enc_data."<br>"."</hr>";
+        echo "加密后的:".$enc_data;
+        echo "<br>";
+        echo "<hr>";
         //post数据
 
         $post_data = [
             'data' => $enc_data,
         ];
         //将加密的文件发送
-        $url='http://mp.1911.com/test/desc';
         //curl初始
         $ch=curl_init();
         //设置参数
@@ -175,6 +176,21 @@ class TestController extends Controller{
             var_dump($errmsg);
         }
         curl_close($ch);
+        $pub_key=file_get_contents(storage_path('keys/mp_pub.key'));
+        openssl_public_decrypt($response,$enc_data,$pub_key);
+        echo "<br>";
+        echo "<hr>";
+        echo $enc_data;
     }
-
+    /*
+     * 签名测试
+     */
+    public function  sign1(){
+        $data="摩西摩西";
+        $key='1911';
+        $sign_str=md5($data . $key);
+        $url='http://mp.1911.com/test/sign1?data='.$data.'&sign='.$sign_str;
+        $response=file_get_contents($url);
+        echo $response;
+    }
 }

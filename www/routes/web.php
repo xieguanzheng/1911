@@ -37,7 +37,8 @@ Route::any('/user/reg','User\IndexController@reg');
 Route::any('/user/login','User\IndexController@login')->middleware('verify.token');
 Route::get('/user/center','User\IndexController@center')->middleware('count');
 
-
+//签名
+Route::any('/test/sign1','TestController@sign1');
 
 //对称加密
 Route::get('/encrtypt1','TestController@encrtypt1');
