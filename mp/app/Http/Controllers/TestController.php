@@ -67,7 +67,40 @@ class TestController extends Controller{
         $enc_data =$_POST['data'];
         $priv_key=openssl_get_privatekey(file_get_contents(storage_path('keys/priv.key')));
         openssl_private_decrypt($enc_data,$dec_data,$priv_key);
-        echo "解密的数据:".$dec_data;
+        //echo "解密的数据:".$dec_data;
 
+        $data="收到";
+        //echo "收到:".$data."<br>"."</hr>";
+        $content=openssl_get_privatekey(file_get_contents(storage_path('keys/priv.key')));
+        $priv_key=openssl_get_privatekey($content);
+        openssl_private_encrypt($data,$decs_data,$priv_key);
+    echo $decs_data;
+    }
+    public function sign1(Request $request){
+        //echo '<pre>';print_r($_GET);echo '</pre>';
+        $key ='1911';
+        $data=$request->get('data');
+        $sign=$request->get('sign');
+       // echo $sign;
+        $sign_str1=md5($data . $key);
+        if($sign_str1 == $sign){
+            echo "验签成功\\";
+        }else{
+            echo "验签失败";
+        }
+
+    }
+    public function test4(){
+            if(isset($_SERVER['HTTP_TOKEN'])){
+
+            }else{
+                echo "授权失败";
+                die;
+            }
+        $uid=$_SERVER['HTTP_UID'];
+        $token=$_SERVER['HTTP_TOKEN'];
+        echo 'uid:'.$uid;echo '</br>';
+        echo 'token:'.$token;echo '</br>';
+        //echo '<pre>';print_r($_SERVER);echo'</pre>';
     }
 }
