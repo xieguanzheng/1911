@@ -45,3 +45,12 @@ Route::get('/encrtypt1','TestController@encrtypt1');
 //非对称加密
 Route::get("/rsa","TestController@rsa");
 Route::get('/rsa/resaeEncypt1','TestController@resaeEncypt1');
+Route::get('/test/Pay','TestController@testPay');
+Route::get('/pay','TestController@pay');
+Route::get('/header1','TestController@header1');
+//H5商城
+Route::get("/admin/log","Admin\LoginController@log");//登录
+Route::get("/admin/logindo","Admin\LoginController@logindo");//登录
+Route::any("/admin/reg","Admin\LoginController@reg");//注册
+
+Route::get("/admin/setting","Admin\LoginController@setting");//注册
