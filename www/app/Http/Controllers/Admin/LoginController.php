@@ -20,4 +20,7 @@ class LoginController extends Controller
     public function setting(){
         return view("login.setting");
     }
+    public function index(){
+        return view("login.index");
+    }
 }

@@ -121,9 +121,9 @@
         </div>
         <div class="login">
             <div class="row">
-                <form class="col s12" method="post" action="http://www.blog.com/log">
+                <form class="col s12" method="post" action="http://mp.1911.com/admin/logindo">
                     <div class="input-field">
-                        <input type="text" name="username" class="validate" placeholder="USERNAME" required>
+                        <input type="text" name="user_name" class="validate" placeholder="USERNAME" required>
                     </div>
                     <div class="input-field">
                         <input type="password" name="password" class="validate" placeholder="PASSWORD" required>
