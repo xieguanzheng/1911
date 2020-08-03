@@ -28,7 +28,7 @@
 <div class="navbar-top">
     <!-- site brand	 -->
     <div class="site-brand">
-        <a href="index.html"><h1>Mstore</h1></a>
+        <a href="{{url('/admin/index')}}"><h1>Mstore</h1></a>
     </div>
     <!-- end site brand	 -->
     <div class="side-nav-panel-right">
@@ -44,11 +44,11 @@
             <img src="img/profile.jpg" alt="">
             <h2>John Doe</h2>
         </li>
-        <li><a href="{{url('/setting')}}"><i class="fa fa-cog"></i>Settings</a></li>
+        <li><a href="{{url('/admin/setting')}}"><i class="fa fa-cog"></i>Settings</a></li>
         <li><a href="{{url('/about')}}"><i class="fa fa-user"></i>About Us</a></li>
         <li><a href="{{url('/contact')}}"><i class="fa fa-envelope-o"></i>Contact Us</a></li>
-        <li><a href="{{url('/log')}}"><i class="fa fa-sign-in"></i>Login</a></li>
-        <li><a href="{{url('/reg')}}"><i class="fa fa-user-plus"></i>Register</a></li>
+        <li><a href="{{url('/admin/log')}}"><i class="fa fa-sign-in"></i>Login</a></li>
+        <li><a href="{{url('/admin/reg')}}"><i class="fa fa-user-plus"></i>Register</a></li>
     </ul>
 </div>
 <!-- end side nav right-->

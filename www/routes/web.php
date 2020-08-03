@@ -54,6 +54,6 @@ Route::get('/header1','TestController@header1');
 Route::get("/admin/log","Admin\LoginController@log");//登录
 
 Route::any("/admin/reg","Admin\LoginController@reg");//注册
-
+Route::any("/admin/setting","Admin\LoginController@setting");
 Route::get("/admin/index","Admin\LoginController@index");
-Route::get("/oauth/git","OauthController@git");
+Route::get("/oauth/github","OauthController@git");

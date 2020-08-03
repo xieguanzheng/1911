@@ -10,8 +10,8 @@ use DB;
 class OauthController extends Controller
 {
     public function git(){
-        echo 123;
-        //echo '<pre>';print_r($_GET);echo '</pre>';
+
+        echo '<pre>';print_r($_GET);echo '</pre>';
     }
 
 }

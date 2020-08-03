@@ -85,14 +85,14 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://github.com/login/oauth/authorize?client_id=4586938d48b75ee75a31&redirect_uri=http://www.1911.com/oauth/git">GITHUB登录</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://github.com/login/oauth/authorize?client_id=4586938d48b75ee75a31&redirect_uri=http://www.1911.com/oauth/github">GITHUB登录</a>
+                    {{--<a href="https://laracasts.com">Laracasts</a>--}}
+                    {{--<a href="https://laravel-news.com">News</a>--}}
+                    {{--<a href="https://blog.laravel.com">Blog</a>--}}
+                    {{--<a href="https://nova.laravel.com">Nova</a>--}}
+                    {{--<a href="https://forge.laravel.com">Forge</a>--}}
+                    {{--<a href="https://vapor.laravel.com">Vapor</a>--}}
+                    {{--<a href="https://github.com/laravel/laravel">GitHub</a>--}}
                 </div>
             </div>
         </div>
